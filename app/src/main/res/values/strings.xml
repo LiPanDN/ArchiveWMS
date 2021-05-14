@@ -10,4 +10,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_code">CodeActivity</string>
+    <string name="btn_BarCode">Bar Code</string>
+    <string name="btn_QCode">Q Code</string>
+    <string name="btn_GenerateBarCode">Generate Bar Code</string>
+    <string name="title_activity_folder">FolderActivity</string>
+    <string name="title_activity_box">BoxActivity</string>
 </resources>

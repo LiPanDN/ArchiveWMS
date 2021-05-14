@@ -17,6 +17,7 @@ public class HttpHelper {
     public static final String BASE_URL = "http://localhost:58843/AndroidService.svc/";
     private static final String USER_AGENT = "Mozilla/4.5";
 
+
     private static HttpPost getHttpPost(String url, String json) {
         HttpPost request = null;
         try {
