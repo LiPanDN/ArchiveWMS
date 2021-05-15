@@ -36,7 +36,7 @@ public class FolderActivity extends AppCompatActivity {
         title.put("address", "案卷号");
         items.add(title);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             Map<String, Object> item = new HashMap<String, Object>();
             item.put("row", i);
             item.put("name", "1111");

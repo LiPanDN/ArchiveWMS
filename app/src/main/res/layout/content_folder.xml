@@ -61,7 +61,7 @@
         <GridView
             android:id="@+id/ajGrid"
             android:layout_width="800dp"
-            android:layout_height="415dp"
+            android:layout_height="295dp"
             android:numColumns="1"
             android:stretchMode="columnWidth" />
 
@@ -73,13 +73,13 @@
                 android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="@string/btn_Delete" />
 
             <Button
                 android:id="@+id/button9"
                 android:layout_width="148dp"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="@string/btn_SavePrint" />
         </TableRow>
 
 
