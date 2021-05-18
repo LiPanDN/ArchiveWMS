@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+//boxing
 public class BoxActivity extends AppCompatActivity {
 
     @Override
