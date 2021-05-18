@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
+import com.fuzheng.archivewms.Util.HttpHelper;
 import com.fuzheng.archivewms.data.LoginRepository;
 import com.fuzheng.archivewms.data.Result;
 import com.fuzheng.archivewms.data.model.LoggedInUser;
@@ -16,6 +17,8 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
+
+    private String loginRequestURL = HttpHelper.BASE_URL+"ValidateLogin?userName=%s&pwd=%s";
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
@@ -30,6 +33,10 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
+
+        String requestURL = String.format(loginRequestURL,username,password);
+        String returnString = HttpHelper.Post(requestURL,null);
+
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
 

@@ -4,18 +4,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import com.fuzheng.archivewms.Util.HttpHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -24,6 +30,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    public ImageButton btnFolder;
+    public String txtJsonResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +47,58 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        btnFolder = findViewById(R.id.imgBtnBoxing);
+
+        btnFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                btnFolder.setClickable(false);
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        Gson gson = new Gson();
+                        txtJsonResult = PostRegistLogin(null);
+                        //progressDialog.dismiss();
+                        handlerUserInfo.sendEmptyMessage(0);
+                    }
+                }).start();
+
+            }
+        });
+
     }
+
+    private String PostRegistLogin(String json) {
+        String url = HttpHelper.BASE_URL + "ValidateLogin?userName=2121&pwd=2121";
+        return HttpHelper.Post(url, json);
+    }
+    Handler handlerUserInfo = new Handler() {
+        public void handleMessage(Message msg) {
+            //以后如果做用户名密码判断就在这里判断
+            if (txtJsonResult.equals("\"登录成功\"")){
+                //loginSuccess();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Toast.makeText(Login.this,"登录成功",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return;
+            }//如果失败,Toast提示
+            else
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Toast.makeText(Login.this,"登录失败:请检查用户名或密码是否正确",Toast.LENGTH_SHORT).show();
+                        btnFolder.setClickable(true);
+                    }
+                });
+                return;
+            }
+        }
+    };
 
 
     //装盒

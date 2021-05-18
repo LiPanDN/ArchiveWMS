@@ -30,7 +30,6 @@
                 style="@android:style/Widget.ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onFoldering"
                 app:srcCompat="@mipmap/ic_launcher"
                 tools:srcCompat="@mipmap/ic_launcher" />
 

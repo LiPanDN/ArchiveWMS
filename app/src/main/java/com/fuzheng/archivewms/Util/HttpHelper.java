@@ -14,17 +14,21 @@ import java.io.IOException;
 
 public class HttpHelper {
 
-    public static final String BASE_URL = "http://localhost:58843/AndroidService.svc/";
+    public static final String BASE_URL = "http://192.168.111.144:58843/Archive/";
     private static final String USER_AGENT = "Mozilla/4.5";
+    private static final String AppKey = "5aaC5p6c5L2g6KeJ5b6X5LiN6ZSZ77";
+    private static final String AppSecrect= "5aaC5p6c5L2g6KeJ5b6X5LiN6ZSZ77";
 
 
     private static HttpPost getHttpPost(String url, String json) {
         HttpPost request = null;
         try {
-            request = new HttpPost(url);
+            request= new HttpPost(url);
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-Type", "application/json");
             request.setHeader("User-Agent", USER_AGENT);
+            request.setHeader("AppKey",AppKey);
+            request.setHeader("AppSecrect",AppSecrect);
         } catch (IllegalArgumentException e) {
             System.out.println("网络调用出现异常，请检查访问的URL地址是否正确");
             return null;
@@ -71,13 +75,14 @@ public class HttpHelper {
         return result;
     }
 
-    // ����Get���󣬻����Ӧ��ѯ���
+    //
     public static String Get(String url) {
-        // ���HttpGet����
         HttpGet request = null;
         String result = null;
         try {
             request = new HttpGet(url);
+            request.setHeader("AppKey",AppKey);
+            request.setHeader("AppSecrect",AppSecrect);
         } catch (IllegalArgumentException e) {
             result = "网络Get调用出现异常，请检查访问的URL地址是否正确";
             System.out.println(result);
