@@ -1,5 +1,6 @@
 package com.fuzheng.archivewms;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnFolder = findViewById(R.id.imgBtnBoxing);
-
         btnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -57,13 +57,12 @@ public class MainActivity extends AppCompatActivity {
 
                 new Thread(new Runnable() {
                     public void run() {
-                        Gson gson = new Gson();
+                        //Gson gson = new Gson();
                         txtJsonResult = PostRegistLogin(null);
                         //progressDialog.dismiss();
                         handlerUserInfo.sendEmptyMessage(0);
                     }
                 }).start();
-
             }
         });
 
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         String url = HttpHelper.BASE_URL + "ValidateLogin?userName=2121&pwd=2121";
         return HttpHelper.Post(url, json);
     }
+    @SuppressLint("HandlerLeak")
     Handler handlerUserInfo = new Handler() {
         public void handleMessage(Message msg) {
             //以后如果做用户名密码判断就在这里判断
