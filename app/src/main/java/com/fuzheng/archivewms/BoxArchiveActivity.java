@@ -28,7 +28,9 @@ import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 import android.view.ViewGroup;
 
+import com.fuzheng.archivewms.Util.AlterDialog;
 import com.fuzheng.archivewms.Util.HttpHelper;
+import com.fuzheng.archivewms.Util.StringHelper;
 
 public class BoxArchiveActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
     public Button btnSave;
@@ -38,11 +40,10 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
     public EditText etBoxID;
     public EditText etAJID;
     private ProgressDialog progressDialog = null;
-    private ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>();
+    private ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
     private GridView gridView;
     private GridViewAdapter adapter;
     private Boolean isShowDelete = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,17 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_box_archive);
 
         etBoxID = findViewById(R.id.etHZID);
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             public void run() {
                 etBoxID.setText(GetHZID());
             }
-        }).start();
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
 
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +97,8 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                     if (GetResult) {
                         Insert2List(ajID);
                     } else {
-                        progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
+                        //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
+                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 }
@@ -113,8 +121,8 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                     if (GetResult) {
                         Insert2List(ajID);
                     } else {
-                        progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
-                        progressDialog.dismiss();
+                        //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
+                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 } else {
@@ -128,7 +136,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
                                    int position, long id) {
-        if(position == 0)
+        if (position == 0)
             return false;
         System.out.println("长按事件");
         if (isShowDelete) {
@@ -163,9 +171,9 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         if (isShowDelete) {
             data.remove(position);
             isShowDelete = false;
-            for (int i = 1;i<data.size();i++)
-            {
-                data.get(i).put("row",i);
+            //更新序号
+            for (int i = 1; i < data.size(); i++) {
+                data.get(i).put("row", i);
             }
         }
         newList.addAll(data);
@@ -173,15 +181,14 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         data.addAll(newList);
     }
 
-    public void BindingGridview()
-    {
+    public void BindingGridview() {
         //表头
         HashMap<String, Object> title = new HashMap<String, Object>();
         title.put("row", "序号");
         title.put("ID", "案卷号");
         data.add(title);
 
-        gridView =(GridView)findViewById(R.id.list_AJ);
+        gridView = (GridView) findViewById(R.id.list_AJ);
         adapter = new GridViewAdapter(
                 BoxArchiveActivity.this, //上下文环境
                 data  //装载数据的控件
@@ -191,21 +198,30 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
     }
 
 
-
-
     private void Save() {
         btnSave.setClickable(false);
         btnSavePrint.setClickable(false);
         progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "请稍等...", "正在保存...", true);
-        progressDialog.dismiss();
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             public void run() {
-                String JsonStr = BuildJson();
-                txtJsonResult = PostSave(JsonStr);
-                progressDialog.dismiss();
+                ArrayList<String> ss = new ArrayList<String>();
+                for (int i = 0; i < data.size(); i++) {
+                    if(i==0)
+                        continue;
+                    ss.add(data.get(i).get("ID").toString());
+                }
+                String str = StringHelper.StringJoin(",",ss);
+                txtJsonResult = PostSave(null, str);
                 handlerUserInfo.sendEmptyMessage(0);
             }
-        }).start();
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
+        progressDialog.dismiss();
     }
 
     //未完成的Json构建方法
@@ -214,24 +230,24 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         return new String();
     }
 
-    //未完成的保存请求
-    private String PostSave(String json) {
-        String url = HttpHelper.BASE_URL + "Validate";
-        return HttpHelper.Post(url, json);
+    //保存请求
+    private String PostSave(String json, String AJCodes) {
+        String url = HttpHelper.BASE_URL + "ZH?hzBarCode=" + etBoxID.getText() + "&ajBarCodes=" + AJCodes;
+        return HttpHelper.Post(url, null);
     }
 
-    //未完成的检查请求
+    //AJ检查请求
     private Boolean GetChecking(String id) {
-        //String url = HttpHelper.BASE_URL + "Validate";
+        String url = HttpHelper.BASE_URL + "ValidateAJHZXZBarCodeIsValid?barCode=" + id;
         //return ("true".equals(HttpHelper.Get(url)));
         return true;
     }
 
-    //未完成的盒号请求
+    //盒号请求
     private String GetHZID() {
-        return "HZ-001";
-        //String url = HttpHelper.BASE_URL + "Validate";
-        //return HttpHelper.Get(url);
+        //return "HZ-001";
+        String url = HttpHelper.BASE_URL + "NewHZCode";
+        return HttpHelper.Get(url).replace("\"", "");
     }
 
     private void Insert2List(String ajID) {
