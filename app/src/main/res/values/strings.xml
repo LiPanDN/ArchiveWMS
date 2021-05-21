@@ -19,4 +19,5 @@
     <string name="btn_Delete">删除</string>
     <string name="btn_SavePrint">保存和打印</string>
     <string name="title_activity_test_bar_code">TestBarCodeActivity</string>
+    <string name="title_activity_box_archive">BoxArchiveActivity</string>
 </resources>

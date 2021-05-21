@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".FolderActivity"
-    tools:showIn="@layout/activity_folder">
+    tools:context=".BoxArchiveActivity"
+    tools:showIn="@layout/activity_box_archive">
 
     <TableLayout
-        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="122dp"
+        android:layout_height="match_parent"
+        android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,20 +22,17 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="100dp"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="盒号" />
 
             <EditText
-                android:id="@+id/etFolder"
-                android:layout_width="271dp"
+                android:id="@+id/etHZID"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:editable="false"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -44,48 +40,40 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="案卷条码" />
+                android:text="案卷号" />
 
             <EditText
-                android:id="@+id/etBarCode"
+                android:id="@+id/etAJID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="条码" />
+                android:inputType="textPersonName" />
         </TableRow>
 
         <GridView
-            android:id="@+id/ajGrid"
+            android:id="@+id/list_AJ"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="1"
-            android:stretchMode="columnWidth" />
-
+            android:layout_height="200dp"
+            android:numColumns="1" />
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_Delete" />
+                android:text="保存" />
 
             <Button
-                android:id="@+id/button9"
-                android:layout_width="148dp"
+                android:id="@+id/btnSavePrint"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_SavePrint" />
+                android:text="保存并打印" />
         </TableRow>
-
-
     </TableLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
