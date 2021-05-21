@@ -24,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     public String txtJsonResult;
     public EditText etUserName;
     public EditText etPwd;
+    public static  String  currentUserName;
+
     private ProgressDialog progressDialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginSuccess()
     {
+        currentUserName = etUserName.getText().toString();
         //实现跳转
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
         startActivity(intent);
