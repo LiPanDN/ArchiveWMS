@@ -8,4 +8,85 @@
     tools:context=".BoxActivity"
     tools:showIn="@layout/activity_box">
 
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="122dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="箱号" />
+
+            <EditText
+                android:id="@+id/XZID"
+                android:layout_width="244dp"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="条码" />
+
+            <EditText
+                android:id="@+id/etBarCode"
+                android:layout_width="244dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="条码" />
+
+            <Button
+                android:id="@+id/Btn_Delete"
+                android:layout_width="62dp"
+                android:layout_height="match_parent"
+                android:text="@string/btn_Delete" />
+        </TableRow>
+
+        <GridView
+            android:id="@+id/ajGrid"
+            android:layout_width="800dp"
+            android:layout_height="405dp"
+            android:numColumns="1"
+            android:stretchMode="columnWidth" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="31dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_Save" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="164dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_SavePrint" />
+        </TableRow>
+
+
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
