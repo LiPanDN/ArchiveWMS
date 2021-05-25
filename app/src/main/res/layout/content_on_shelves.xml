@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".BoxArchiveActivity"
-    tools:showIn="@layout/activity_box_archive">
+    tools:context=".OnShelvesActivity"
+    tools:showIn="@layout/activity_on_shelves">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="盒号" />
+                android:text="库位号" />
 
             <EditText
                 android:id="@+id/etLBID"
@@ -44,7 +44,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="案卷号" />
+                android:text="条码" />
 
             <EditText
                 android:id="@+id/etAJID"
@@ -76,11 +76,6 @@
                 android:layout_height="wrap_content"
                 android:text="保存" />
 
-            <Button
-                android:id="@+id/btnSavePrint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="保存并打印" />
         </TableRow>
     </TableLayout>
 

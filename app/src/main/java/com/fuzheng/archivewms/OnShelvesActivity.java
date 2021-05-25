@@ -1,35 +1,40 @@
 package com.fuzheng.archivewms;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.Button;
-import android.app.ProgressDialog;
-import android.widget.GridView;
-import android.widget.Toast;
-import android.widget.TextView;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.fuzheng.archivewms.Util.AlterDialog;
 import com.fuzheng.archivewms.Util.HttpHelper;
 import com.fuzheng.archivewms.Util.StringHelper;
 
-public class BoxArchiveActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Handler;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+
+public class OnShelvesActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+
     public Button btnSave;
     public Button btnSavePrint;
     public String txtJsonResult;
     public Boolean GetResult;
-    public EditText etBoxID;
+    public EditText etLibID;
     public EditText etAJID;
     private ProgressDialog progressDialog = null;
     private ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
@@ -42,18 +47,18 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_box_archive);
 
-        etBoxID = findViewById(R.id.etLBID);
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                etBoxID.setText(GetHZID());
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
-        }
+//        etLibID = findViewById(R.id.etLBID);
+//        Thread thread = new Thread(new Runnable() {
+//            public void run() {
+//                etLibID.setText(GetHZID());
+//            }
+//        });
+//        thread.start();
+//        try {
+//            thread.join();
+//        } catch (InterruptedException e) {
+//            //e.printStackTrace();
+//        }
 
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +84,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     System.out.println("这里是监听扫码枪的回车事件");
                     String ajID = v.getText().toString();
-                    Thread thread = new IDCheckThread(ajID);
+                    Thread thread = new OnShelvesActivity.IDCheckThread(ajID);
                     thread.start();
                     try {
                         thread.join();
@@ -90,7 +95,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                         Insert2List(ajID);
                     } else {
                         //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
-                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
+                        AlterDialog.simple(OnShelvesActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 }
@@ -103,7 +108,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                     System.out.println("这里是监听手机的回车事件");
 
                     String ajID = v.getText().toString();
-                    Thread thread = new IDCheckThread(ajID);
+                    Thread thread = new OnShelvesActivity.IDCheckThread(ajID);
                     thread.start();
                     try {
                         thread.join();
@@ -114,7 +119,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                         Insert2List(ajID);
                     } else {
                         //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
-                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
+                        AlterDialog.simple(OnShelvesActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 } else {
@@ -144,7 +149,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                                         int position, long id) {
                     delete(position);//删除选中项
                     System.out.println("删除事件");
-                    adapter = new GridViewAdapter(BoxArchiveActivity.this, data);//重新绑定一次adapter
+                    adapter = new GridViewAdapter(OnShelvesActivity.this, data);//重新绑定一次adapter
                     gridView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();//刷新gridview
 
@@ -177,12 +182,12 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         //表头
         HashMap<String, Object> title = new HashMap<String, Object>();
         title.put("row", "序号");
-        title.put("ID", "案卷号");
+        title.put("ID", "条码");
         data.add(title);
 
         gridView = (GridView) findViewById(R.id.list_AJ);
         adapter = new GridViewAdapter(
-                BoxArchiveActivity.this, //上下文环境
+                OnShelvesActivity.this, //上下文环境
                 data  //装载数据的控件
         );
         gridView.setOnItemLongClickListener(this);//监听长按事件
@@ -193,16 +198,16 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
     private void Save() {
         btnSave.setClickable(false);
         btnSavePrint.setClickable(false);
-        progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "请稍等...", "正在保存...", true);
+        progressDialog = ProgressDialog.show(OnShelvesActivity.this, "请稍等...", "正在保存...", true);
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 ArrayList<String> ss = new ArrayList<String>();
                 for (int i = 0; i < data.size(); i++) {
-                    if(i==0)
+                    if (i == 0)
                         continue;
                     ss.add(data.get(i).get("ID").toString());
                 }
-                String str = StringHelper.StringJoin(",",ss);
+                String str = StringHelper.StringJoin(",", ss);
                 txtJsonResult = PostSave(null, str);
                 handlerUserInfo.sendEmptyMessage(0);
             }
@@ -224,7 +229,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
 
     //保存请求
     private String PostSave(String json, String AJCodes) {
-        String url = HttpHelper.BASE_URL + "ZH?hzBarCode=" + etBoxID.getText() + "&ajBarCodes=" + AJCodes;
+        String url = HttpHelper.BASE_URL + "ZH?hzBarCode=" + etLibID.getText() + "&ajBarCodes=" + AJCodes;
         return HttpHelper.Post(url, null);
     }
 
@@ -259,7 +264,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(BoxArchiveActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OnShelvesActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                     }
                 });
             }//如果失败,Toast提示
@@ -267,7 +272,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(BoxArchiveActivity.this, "保存失败:请检查网络情况", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OnShelvesActivity.this, "保存失败:请检查网络情况", Toast.LENGTH_SHORT).show();
                         btnSave.setClickable(true);
                         btnSavePrint.setClickable(true);
                     }
@@ -292,3 +297,5 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         }
     }
 }
+
+
