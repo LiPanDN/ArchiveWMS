@@ -12,21 +12,13 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.app.ProgressDialog;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import android.view.LayoutInflater;
-import android.widget.BaseAdapter;
-import android.view.ViewGroup;
 
 import com.fuzheng.archivewms.Util.AlterDialog;
 import com.fuzheng.archivewms.Util.HttpHelper;
@@ -63,7 +55,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
             //e.printStackTrace();
         }
 
-        btnSave = findViewById(R.id.btnSave);
+        btnSave = findViewById(R.id.btnSavexz);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -71,7 +63,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        btnSavePrint = findViewById(R.id.btnSavePrint);
+        btnSavePrint = findViewById(R.id.btnSavePrintxz);
         btnSavePrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {

@@ -49,7 +49,7 @@ public class FolderActivity extends AppCompatActivity {
                 items,    //数据源
                 R.layout.activity_ajgrid_item,  //内容布局
                 new String[]{"row","name", "address"},  //数据源的arrayName
-                new int[]{R.id.text_item0,R.id.text_item1, R.id.text_item2}  //装载数据的控件
+                new int[]{R.id.text_item0,R.id.text_item0, R.id.text_item1}  //装载数据的控件
         );
         gv.setAdapter(sa);   //与gridview绑定
 

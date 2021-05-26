@@ -33,10 +33,8 @@
             android:name=".BoxActivity"
             android:label="@string/title_activity_box"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
         </activity>
         <activity
             android:name=".FolderActivity"
@@ -60,6 +58,30 @@
             android:theme="@style/AppTheme.NoActionBar" >
 
         </activity>
+        <activity
+            android:name=".BoxArchiveActivity"
+            android:label="@string/title_activity_box_archive"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
+        <activity
+            android:name=".DataoutActivity"
+            android:label="DataoutActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+
+        </activity>
+        <activity
+            android:name=".Displace_Activity"
+            android:label="Displace_Activity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
+
 
 </manifest>
