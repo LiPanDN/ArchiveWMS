@@ -25,13 +25,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DynamicSubItemForGridViewActivity"></activity>
         <activity
             android:name=".PrintAJActivity"
             android:label="@string/title_activity_print_aj"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".OnShelvesActivity"
-            android:label="@string/title_activity_on_shelves"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BoxArchiveActivity"></activity>
+        <activity
+            android:name=".OnShelvesActivity"
+            android:label="@string/title_activity_on_shelves"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".BoxArchiveActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

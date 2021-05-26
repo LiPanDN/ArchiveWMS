@@ -63,7 +63,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        btnSavePrint = findViewById(R.id.btnSavePrint);
+        btnSavePrint = findViewById(R.id.btnPrint);
         btnSavePrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -243,6 +243,11 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
     }
 
     private void Insert2List(String ajID) {
+        for (int i =0;i<data.size();i++) {
+            String temp = data.get(i).get("ID").toString();
+            if(ajID == temp)
+                return;
+        }
         HashMap<String, Object> value = new HashMap<String, Object>();
         value.put("row", data.toArray().length);
         value.put("ID", ajID);

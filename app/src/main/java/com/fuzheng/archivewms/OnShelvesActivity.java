@@ -68,7 +68,7 @@ public class OnShelvesActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
-        btnSavePrint = findViewById(R.id.btnSavePrint);
+        btnSavePrint = findViewById(R.id.btnPrint);
         btnSavePrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {

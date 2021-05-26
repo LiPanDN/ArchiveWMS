@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnFolder = findViewById(R.id.imgBtnBoxing);
+        btnFolder = findViewById(R.id.btnAJPrint);
         btnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ArchiveWMS</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">付正档案WMS登录</string>

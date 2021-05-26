@@ -77,7 +77,7 @@
                 android:text="保存" />
 
             <Button
-                android:id="@+id/btnSavePrint"
+                android:id="@+id/btnPrint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="保存并打印" />

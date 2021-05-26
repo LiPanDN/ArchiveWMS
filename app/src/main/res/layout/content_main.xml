@@ -25,14 +25,23 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/imgBtnBoxing"
-                style="@android:style/Widget.ImageButton"
+            <Button
+                android:id="@+id/btnAJPrint"
+                android:layout_width="256dp"
+                android:layout_height="wrap_content"
+                android:text="打印案卷条码" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher"
-                tools:srcCompat="@mipmap/ic_launcher" />
-
+                android:text="TextView" />
         </TableRow>
 
         <TableRow
@@ -42,13 +51,11 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton3"
-                style="@android:style/Widget.ImageButton"
+            <Button
+                android:id="@+id/btnBoxArc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="OnBoxing"
-                app:srcCompat="@mipmap/ic_launcher" />
+                android:text="案卷装盒" />
 
         </TableRow>
 
@@ -58,12 +65,12 @@
             android:layout_height="50dp"
             android:gravity="center_horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton4"
-                style="@android:style/Widget.ImageButton"
+            <Button
+                android:id="@+id/btnBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher" />
+                android:text="案卷装箱" />
+
         </TableRow>
 
         <TableRow
@@ -72,11 +79,12 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton5"
+            <Button
+                android:id="@+id/btnOnShelves"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher_round" />
+                android:text="上架" />
+
         </TableRow>
 
         <TableRow
@@ -85,11 +93,27 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton6"
+            <Button
+                android:id="@+id/btnOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher_round" />
+                android:text="出库" />
+
         </TableRow>
+
+        <TableRow
+            android:id="@+id/row6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnChange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="换位" />
+
+        </TableRow>
+
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
