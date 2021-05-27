@@ -26,7 +26,7 @@ import com.fuzheng.archivewms.Util.StringHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+//出库
 public class DataoutActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
     private ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>();
     private GridViewAdapter_Box adapter;
@@ -208,7 +208,7 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
     };
     //出库请求
     private String PostCK(String json, String AJCodes) {
-        String url = HttpHelper.BASE_URL + "RemoveXZHZFromWareHouse?hzBarCodeOrXzBarCodes=" + AJCodes ;
+        String url = HttpHelper.BASE_URL + "RemoveAJXZHZ?ajxzhzBarCodes=" + AJCodes ;
         //String url = HttpHelper.BASE_URL + "ZX?xzBarCode=" + XZID.getText() + "&ajBarcodesOrHZBarCodes=" + AJCodes;
         return HttpHelper.Post(url, null);
     }

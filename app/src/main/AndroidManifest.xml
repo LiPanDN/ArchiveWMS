@@ -68,17 +68,23 @@
             android:name=".DataoutActivity"
             android:label="DataoutActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Displace_Activity"
             android:label="Displace_Activity"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".AddxzhzActivity"
+            android:label="AddxzhzActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+
 
         </activity>
     </application>

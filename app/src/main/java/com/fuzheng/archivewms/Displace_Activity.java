@@ -17,7 +17,7 @@ import com.fuzheng.archivewms.Util.HttpHelper;
 import com.fuzheng.archivewms.Util.StringHelper;
 
 import java.util.ArrayList;
-
+//换位
 public class Displace_Activity extends AppCompatActivity {
     public  EditText Barcode;
     public  EditText position;

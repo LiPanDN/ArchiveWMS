@@ -188,7 +188,7 @@ public class BoxActivity extends AppCompatActivity implements AdapterView.OnItem
         );
         gridView.setOnItemLongClickListener(this);//监听长按事件
         gridView.setAdapter(adapter);   //与gridview绑定
-    }
+}
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
                                    int position, long id) {
