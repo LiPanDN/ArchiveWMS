@@ -1,82 +1,79 @@
 package com.fuzheng.archivewms;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.Button;
-import android.app.ProgressDialog;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-import android.widget.TextView;
-import android.widget.ArrayAdapter;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import android.view.LayoutInflater;
-import android.widget.BaseAdapter;
-import android.view.ViewGroup;
 
 import com.fuzheng.archivewms.Util.AlterDialog;
 import com.fuzheng.archivewms.Util.HttpHelper;
-import com.fuzheng.archivewms.Util.StringHelper;
 
-public class BoxArchiveActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.os.Handler;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONException;
+//import org.json.JSONObject;
+//import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class PrintAJActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
     public Button btnSave;
-    public Button btnSavePrint;
+    public Button btnPrint;
     public String txtJsonResult;
     public Boolean GetResult;
-    public EditText etBoxID;
     public EditText etAJID;
     private ProgressDialog progressDialog = null;
     private ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
     private GridView gridView;
-    private GridViewAdapter adapter;
+    private DynamicGridViewAdapter adapter;
     private Boolean isShowDelete = false;
+    private Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_box_archive);
+        setContentView(R.layout.activity_print_aj);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        etBoxID = findViewById(R.id.etHZID);
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                etBoxID.setText(GetHZID());
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
-        }
-
-        btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnPrint = findViewById(R.id.btnPrint);
+        btnPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Save();
+                PrintAll();
             }
         });
 
-        btnSavePrint = findViewById(R.id.btnPrint);
-        btnSavePrint.setOnClickListener(new View.OnClickListener() {
+        btnSearch = findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Save();
-                //待写入的打印方法
+                Thread thread = new PrintAJActivity.AJSearcher();
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    //e.printStackTrace();
+                }
+                BuildList();
             }
         });
 
@@ -87,7 +84,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     System.out.println("这里是监听扫码枪的回车事件");
                     String ajID = v.getText().toString();
-                    Thread thread = new IDCheckThread(ajID);
+                    Thread thread = new PrintAJActivity.IDCheckThread(ajID);
                     thread.start();
                     try {
                         thread.join();
@@ -98,7 +95,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                         Insert2List(ajID);
                     } else {
                         //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
-                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
+                        AlterDialog.simple(PrintAJActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 }
@@ -111,7 +108,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                     System.out.println("这里是监听手机的回车事件");
 
                     String ajID = v.getText().toString();
-                    Thread thread = new IDCheckThread(ajID);
+                    Thread thread = new PrintAJActivity.IDCheckThread(ajID);
                     thread.start();
                     try {
                         thread.join();
@@ -122,7 +119,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                         Insert2List(ajID);
                     } else {
                         //progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确", true);
-                        AlterDialog.simple(BoxArchiveActivity.this,"条码存在问题","请检查条码" + ajID + "是否正确");
+                        AlterDialog.simple(PrintAJActivity.this, "条码存在问题", "请检查条码" + ajID + "是否正确");
                     }
                     return true;
                 } else {
@@ -131,6 +128,57 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
             }
         });
         BindingGridview();
+    }
+
+    public void PrintAll() {
+
+    }
+
+    public void BuildList() {
+        try {
+            JSONArray a = JSONArray.parseArray(txtJsonResult);
+            if(a.equals(null))
+                return;
+            JSONObject jsonObject = a.getJSONObject(0);
+            Map param = new HashMap();
+            ArrayList<String> keys = new ArrayList<String>();
+            for (Map.Entry entry : jsonObject.entrySet()) {
+                String key = entry.getKey().toString();
+                keys.add(key);
+            }
+            HashMap<String, Object> title = new HashMap<String, Object>();
+            title.put("row", "序号");
+            for (int i = 0; i < keys.size(); i++) {
+                title.put("c" + i, keys.get(i));
+            }
+            data.add(title);
+            adapter.notifyDataSetChanged();
+
+            for (int i = 0; i < a.size(); i++) {
+                JSONObject job = a.getJSONObject(i);
+                HashMap<String, Object> value = new HashMap<String, Object>();
+                value.put("row", data.toArray().length);
+                for (int j = 0; j < keys.size(); j++) {
+                    value.put("c" + j, job.get(keys.get(j)));
+                }
+                data.add(value);
+                adapter.notifyDataSetChanged();
+            }
+        } catch (JSONException e) {
+
+        }
+    }
+
+    public String PostForAJList(String AJID) {
+        String url = HttpHelper.BASE_URL + "GetAJSearchResults?ajNo=" + AJID;
+        return HttpHelper.Post(url, null);
+    }
+
+    public HashMap<String, Object> AnalysisJson(String Json) {
+                HashMap<String, Object> map = new HashMap<String, Object>();
+
+        //JSONObject jsonObject = new JSONObject(Json);
+        return map;
     }
 
     @Override
@@ -152,7 +200,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                                         int position, long id) {
                     delete(position);//删除选中项
                     System.out.println("删除事件");
-                    adapter = new GridViewAdapter(BoxArchiveActivity.this, data);//重新绑定一次adapter
+                    adapter = new GridViewAdapter(PrintAJActivity.this, data);//重新绑定一次adapter
                     gridView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();//刷新gridview
 
@@ -183,57 +231,20 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
 
     public void BindingGridview() {
         //表头
-        HashMap<String, Object> title = new HashMap<String, Object>();
-        title.put("row", "序号");
-        title.put("ID", "案卷号");
-        data.add(title);
 
         gridView = (GridView) findViewById(R.id.list_AJ);
         adapter = new GridViewAdapter(
-                BoxArchiveActivity.this, //上下文环境
+                PrintAJActivity.this, //上下文环境
                 data  //装载数据的控件
         );
         gridView.setOnItemLongClickListener(this);//监听长按事件
         gridView.setAdapter(adapter);   //与gridview绑定
     }
 
-
-    private void Save() {
-        btnSave.setClickable(false);
-        btnSavePrint.setClickable(false);
-        progressDialog = ProgressDialog.show(BoxArchiveActivity.this, "请稍等...", "正在保存...", true);
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                ArrayList<String> ss = new ArrayList<String>();
-                for (int i = 0; i < data.size(); i++) {
-                    if(i==0)
-                        continue;
-                    ss.add(data.get(i).get("ID").toString());
-                }
-                String str = StringHelper.StringJoin(",",ss);
-                txtJsonResult = PostSave(null, str);
-                handlerUserInfo.sendEmptyMessage(0);
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
-        }
-        progressDialog.dismiss();
-    }
-
     //未完成的Json构建方法
     private String BuildJson() {
         //Gson gson = new Gson();
         return new String();
-    }
-
-    //保存请求
-    private String PostSave(String json, String AJCodes) {
-        String url = HttpHelper.BASE_URL + "ZH?hzBarCode=" + etBoxID.getText() + "&ajBarCodes=" + AJCodes;
-        return HttpHelper.Post(url, null);
     }
 
     //AJ检查请求
@@ -243,19 +254,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
         return true;
     }
 
-    //盒号请求
-    private String GetHZID() {
-        //return "HZ-001";
-        String url = HttpHelper.BASE_URL + "NewHZCode";
-        return HttpHelper.Get(url).replace("\"", "");
-    }
-
     private void Insert2List(String ajID) {
-        for (int i =0;i<data.size();i++) {
-            String temp = data.get(i).get("ID").toString();
-            if(ajID == temp)
-                return;
-        }
         HashMap<String, Object> value = new HashMap<String, Object>();
         value.put("row", data.toArray().length);
         value.put("ID", ajID);
@@ -272,7 +271,7 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(BoxArchiveActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrintAJActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                     }
                 });
             }//如果失败,Toast提示
@@ -280,9 +279,9 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(BoxArchiveActivity.this, "保存失败:请检查网络情况", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrintAJActivity.this, "保存失败:请检查网络情况", Toast.LENGTH_SHORT).show();
                         btnSave.setClickable(true);
-                        btnSavePrint.setClickable(true);
+                        btnPrint.setClickable(true);
                     }
                 });
             }
@@ -304,4 +303,12 @@ public class BoxArchiveActivity extends AppCompatActivity implements AdapterView
             GetResult = GetChecking(name);
         }
     }
+
+    private class AJSearcher extends Thread {
+        public void run() {
+            String JsonResult = PostForAJList(etAJID.getText().toString());
+            txtJsonResult = JsonResult;
+        }
+    }
+
 }

@@ -20,5 +20,7 @@
     <string name="btn_SavePrint">保存和打印</string>
     <string name="title_activity_test_bar_code">TestBarCodeActivity</string>
     <string name="title_activity_box_archive">BoxArchiveActivity</string>
+    <string name="title_activity_on_shelves">OnShelvesActivity</string>
+    <string name="title_activity_print_aj">PrintAJActivity</string>
     <string name="btn_Save">保存</string>
 </resources>
