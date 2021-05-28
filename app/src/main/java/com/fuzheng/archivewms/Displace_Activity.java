@@ -38,6 +38,7 @@ public class Displace_Activity extends AppCompatActivity {
         });
     }
     private void QR() {
+
         progressDialog = ProgressDialog.show(Displace_Activity.this, "请稍等...", "正在换位...", true);
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -52,6 +53,7 @@ public class Displace_Activity extends AppCompatActivity {
             //e.printStackTrace();
         }
         progressDialog.dismiss();
+
     }
     @SuppressLint("HandlerLeak")//在主线程用Handler处理消息出现时会有警告，提示你，这块有内存泄露的危险
             Handler handlerUserInfo = new Handler(){
@@ -77,7 +79,8 @@ public class Displace_Activity extends AppCompatActivity {
     };
     //换位请求
     private String PostHW(String json) {
-        String url = HttpHelper.BASE_URL + "SwitchPosition?changingdBarCode=" + Barcode.getText()+ "&destinationBarCode=" + position.getText() ;
+        String url = HttpHelper.BASE_URL + "SwitchPosition?changingdBarCode=" + Barcode.getText().toString().replaceAll(" ","")+
+                "&destinationBarCode=" + position.getText().toString().replaceAll(" ","") ;
         //String url = HttpHelper.BASE_URL + "ZX?xzBarCode=" + XZID.getText() + "&ajBarcodesOrHZBarCodes=" + AJCodes;
         return HttpHelper.Post(url, null);
     }

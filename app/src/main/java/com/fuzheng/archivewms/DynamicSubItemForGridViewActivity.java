@@ -11,7 +11,6 @@ public class DynamicSubItemForGridViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_sub_item_for_grid_view);
-        adapter = new DynamicGridViewAdapter(this,DynamicSubItemForGridViewActivity.this)
     }
 
     public void ADDTView() {

@@ -53,9 +53,15 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
         etBarCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String s=etBarCode.getText().toString();
+                if(s==null||"".equals(s)|| "".equals(s.trim())){
+                    Toast.makeText(DataoutActivity.this, "空的内容不能添加到集合", Toast.LENGTH_SHORT).show();
+                    return  false;
+                }
+                else {
                 if(actionId== EditorInfo.IME_ACTION_SEARCH){
                     System.out.println("监听扫描枪回车事件");
-                    String id=v.getText().toString();
+                    String id=v.getText().toString().replaceAll(" ","");
                         Insert2List(id);
                     return  true;
                 }
@@ -67,12 +73,13 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
                     }
                     System.out.println("这里是监听手机的回车事件");
 
-                    String id = v.getText().toString();
+                    String id = v.getText().toString().replaceAll(" ","");
 
                         Insert2List(id);
                     return true;
                 } else {
                     return false;}
+            }
             }
         });
         BindingGridview();
@@ -160,6 +167,10 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
         data.addAll(newList);
     }
     private void Out() {
+        if(data.size()<2){
+            Toast.makeText(DataoutActivity.this, "不能提交空的表单", Toast.LENGTH_SHORT).show();
+        }
+        else {
         btnOut.setClickable(false);
         progressDialog = ProgressDialog.show(DataoutActivity.this, "请稍等...", "正在出库...", true);
         Thread thread = new Thread(new Runnable() {
@@ -172,7 +183,24 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
                 }
                 String str = StringHelper.StringJoin(",",ss);
                 txtJsonResult = PostCK(null, str);
-                handlerUserInfo.sendEmptyMessage(0);
+                if (txtJsonResult.indexOf("\"true\"") > 0) {
+                    //SaveSuccess();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(DataoutActivity.this, "出库成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }//如果失败,Toast提示
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(DataoutActivity.this, "出库失败:请检查网络情况", Toast.LENGTH_SHORT).show();
+                            btnOut.setClickable(true);
+                        }
+                    });
+                }
             }
         });
         thread.start();
@@ -183,29 +211,7 @@ public class DataoutActivity extends AppCompatActivity implements AdapterView.On
         }
         progressDialog.dismiss();
     }
-    @SuppressLint("HandlerLeak")//在主线程用Handler处理消息出现时会有警告，提示你，这块有内存泄露的危险
-            Handler handlerUserInfo = new Handler(){
-        public void handleMessage() {
-            if (txtJsonResult.indexOf("\"true\"") > 0) {
-                //SaveSuccess();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(DataoutActivity.this, "出库成功", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }//如果失败,Toast提示
-            else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(DataoutActivity.this, "出库失败:请检查网络情况", Toast.LENGTH_SHORT).show();
-                        btnOut.setClickable(true);
-                    }
-                });
-            }
-        }
-    };
+    }
     //出库请求
     private String PostCK(String json, String AJCodes) {
         String url = HttpHelper.BASE_URL + "RemoveAJXZHZ?ajxzhzBarCodes=" + AJCodes ;

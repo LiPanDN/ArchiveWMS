@@ -200,7 +200,7 @@ public class PrintAJActivity extends AppCompatActivity implements AdapterView.On
                                         int position, long id) {
                     delete(position);//删除选中项
                     System.out.println("删除事件");
-                    adapter = new GridViewAdapter(PrintAJActivity.this, data);//重新绑定一次adapter
+                  //  adapter = new GridViewAdapter(PrintAJActivity.this, data);//重新绑定一次adapter
                     gridView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();//刷新gridview
 
@@ -233,10 +233,10 @@ public class PrintAJActivity extends AppCompatActivity implements AdapterView.On
         //表头
 
         gridView = (GridView) findViewById(R.id.list_AJ);
-        adapter = new GridViewAdapter(
+      /*  adapter = new GridViewAdapter(
                 PrintAJActivity.this, //上下文环境
                 data  //装载数据的控件
-        );
+        );*/
         gridView.setOnItemLongClickListener(this);//监听长按事件
         gridView.setAdapter(adapter);   //与gridview绑定
     }

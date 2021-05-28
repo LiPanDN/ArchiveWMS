@@ -26,7 +26,7 @@ public class DynamicGridViewAdapter extends BaseAdapter {
         // this.names=names;
         this.data = data;
         this.activity = activity;
-        activity.ADDTView(data);
+        //activity.ADDTView(data);
     }
 
     public void setIsShowDelete(boolean isShowDelete) {
